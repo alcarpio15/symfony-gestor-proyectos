@@ -1,0 +1,21 @@
+html, body{
+	height: 100%;
+}
+div, nav {
+	border: 1px solid black;
+	width: 100%;
+}
+
+#top{
+	height: 25%;
+	padding: 10px;
+}
+#container{
+	display: block;
+	height: 60%;
+	padding: 10px;
+}
+#bottom{
+	max-height: 15%;
+	padding: 10px;
+}

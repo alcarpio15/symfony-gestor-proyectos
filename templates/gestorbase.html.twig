@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <!--
+    Plantilla Básica 
+  -->
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gestor de Proyectos: {% block title %}Titulo Provisional{% endblock %}</title>
+    {% block stylesheets %}
+      <link href="{{ asset('blocktester.css') }}" rel="stylesheet" />
+    {% endblock %}
+  </head>
+  <body>
+    <div id="top"><p>Cabecera</p>
+      <div id="header_img"><p>Imagen de Cabecera</p></div>
+      <nav><p>Barra de Navegación</p></nav>
+    </div>
+    <div id="container">{% block container %}<p>Aqui va el Contenedor.</p>
+    {% endblock %}</div>
+    <div id="bottom"><p>Pie de Pagina</p></div>
+  </body>
+</html>
