@@ -1,0 +1,13 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Editar Solicitud de Servicio{% endblock %}
+
+{% block container %}
+    <h1>Editar Solicitud de Servicio</h1>
+
+    {{ include('solicitud_servicio/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('solicitud_servicio_index') }}">back to list</a>
+
+    {{ include('solicitud_servicio/_delete_form.html.twig') }}
+{% endblock %}

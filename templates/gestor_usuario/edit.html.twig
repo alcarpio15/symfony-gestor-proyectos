@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit GestorUsuario{% endblock %}
+
+{% block body %}
+    <h1>Edit GestorUsuario</h1>
+
+    {{ include('gestor_usuario/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('gestor_usuario_index') }}">back to list</a>
+
+    {{ include('gestor_usuario/_delete_form.html.twig') }}
+{% endblock %}

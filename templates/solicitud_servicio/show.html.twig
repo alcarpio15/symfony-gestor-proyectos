@@ -1,0 +1,34 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Solicitud de Servicio ID: {{ solicitud_servicio.id }}.{% endblock %}
+
+{% block container %}
+    <h1>Solicitud de Servicio ID: {{ solicitud_servicio.id }}.</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Asunto</th>
+                <td>{{ solicitud_servicio.asunto }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ solicitud_servicio.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ solicitud_servicio.estado }}</td>
+            </tr>
+            <tr>
+                <th>Creado</th>
+                <td>{{ solicitud_servicio.creado }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('solicitud_servicio_index') }}">back to list</a>
+
+    <a href="{{ path('solicitud_servicio_edit', {'id': solicitud_servicio.id}) }}">edit</a>
+
+    {# {{ include('solicitud_servicio/_delete_form.html.twig') }} #}
+{% endblock %}

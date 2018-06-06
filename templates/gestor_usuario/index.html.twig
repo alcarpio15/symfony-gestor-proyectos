@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GestorUsuario index{% endblock %}
+
+{% block body %}
+    <h1>GestorUsuario index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Roles</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for gestor_usuario in gestor_usuarios %}
+            <tr>
+                <td>{{ gestor_usuario.id }}</td>
+                <td>{{ gestor_usuario.email }}</td>
+                <td>{{ gestor_usuario.username }}</td>
+                <td>{{ gestor_usuario.password }}</td>
+                <td>{{ gestor_usuario.roles ? gestor_usuario.roles|join(', ') : '' }}</td>
+                <td>
+                    <a href="{{ path('gestor_usuario_show', {'id': gestor_usuario.id}) }}">show</a>
+                    <a href="{{ path('gestor_usuario_edit', {'id': gestor_usuario.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('gestor_usuario_new') }}">Create new</a>
+{% endblock %}

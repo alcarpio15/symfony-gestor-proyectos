@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GestorUsuario{% endblock %}
+
+{% block body %}
+    <h1>GestorUsuario</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ gestor_usuario.id }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ gestor_usuario.email }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ gestor_usuario.username }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ gestor_usuario.password }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ gestor_usuario.roles ? gestor_usuario.roles|join(', ') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('gestor_usuario_index') }}">back to list</a>
+
+    <a href="{{ path('gestor_usuario_edit', {'id': gestor_usuario.id}) }}">edit</a>
+
+    {{ include('gestor_usuario/_delete_form.html.twig') }}
+{% endblock %}
