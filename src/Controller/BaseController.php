@@ -4,9 +4,16 @@
 */
 namespace App\Controller;
 
+date_default_timezone_set('UTC');
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+
 
 /**
 * 
@@ -16,8 +23,35 @@ class BaseController extends Controller
     /**
     * @Route("/", name="homepage")
     */
-    public function homepage()
+    public function homepage(): Response
     {
-        return $this->render('gestorbase.html.twig');
+        $this->denyAccessUnlessGranted('ROLE_USER', null, 'No puede ver esta pagina sin estar Registrado.');
+
+        return $this->render('gestorindice.html.twig');
+    }
+
+    /**
+    * @Route("/login", name="login")
+    */
+    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
+    {
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
+    }
+
+    /**
+    * @Route("/logout", name="logout")
+    */
+    public function logout(): Response
+    {
+        
     }
 }
