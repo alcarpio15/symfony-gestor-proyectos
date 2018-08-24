@@ -1,0 +1,11 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Nueva Coordinacion de Area{% endblock %}
+
+{% block container %}
+    <h1>Crear Nueva Coordinacion de Area</h1>
+
+    {{ include('area_coordinacion/_form.html.twig') }}
+
+    <a href="{{ path('area_coordinacion_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Coordinacion de {{ area_coordinacion.area }}{% endblock %}
+
+{% block container %}
+    <h1>Coordinacion de Area</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ area_coordinacion.id }}</td>
+            </tr>
+            <tr>
+                <th>Area</th>
+                <td>{{ area_coordinacion.area }}</td>
+            </tr>
+            <tr>
+                <th>Coordinador</th>
+                <td>
+                    {{ solicitud_servicio.autor.username }} 
+                    -- {{ solicitud_servicio.autor.nombres | default("")}}
+                    {{ solicitud_servicio.autor.apellidos | default("")}} --</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('area_coordinacion_index') }}">back to list</a>
+
+    <a href="{{ path('area_coordinacion_edit', {'id': area_coordinacion.id}) }}">edit</a>
+
+    {{ include('area_coordinacion/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Indice de Coordinaciones de Area{% endblock %}
+
+{% block container %}
+    <h1>AreaCoordinacion index</h1>
+
+    <a href="{{ path('area_coordinacion_new') }}" class="btn btn-default">New Area</a>
+    <a href="{{ path('homepage') }}" class="btn btn-warning">Back</a>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Area</th>
+                <th>Coordinator</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for area_coordinacion in areaCoordinaciones %}
+            <tr>
+                <td>{{ area_coordinacion.id }}</td>
+                <td>{{ area_coordinacion.area }}</td>
+                <td>
+                    {{ area_coordinacion.coordinador.nombres | default(area_coordinacion.coordinador.username)}}
+                    {{ area_coordinacion.coordinador.apellidos | default("")}}
+                </td>
+                <td>
+                    <a href="{{ path('area_coordinacion_show', {'id': area_coordinacion.id}) }}">show</a>
+                    <a href="{{ path('area_coordinacion_edit', {'id': area_coordinacion.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

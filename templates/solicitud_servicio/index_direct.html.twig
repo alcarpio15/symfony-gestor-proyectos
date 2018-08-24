@@ -1,0 +1,48 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Indice de Solicitudes de Servicio.{% endblock %}
+
+{% block container %}
+    <h1>Indice de Solicitudes de Servicio.</h1>
+
+    <a href="{{ path('solicitud_servicio_new') }}" class="btn btn-default">New Servicio</a>
+    <a href="{{ path('homepage') }}" class="btn btn-warning">Back</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Asunto</th>
+                <th>Autor</th>
+                <th>Descripcion</th>
+                <th>Estado</th>
+                <th>Creado</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for solicitud_servicio in solicitud_servicios %}
+            <tr>
+                <td>{{ solicitud_servicio.id }}</td>
+                <td>{{ solicitud_servicio.asunto }}</td>
+                <td>
+                    {{ solicitud_servicio.autor.nombres | default(solicitud_servicio.autor.username)}}
+                    {{ solicitud_servicio.autor.apellidos | default("")}}
+                </td>
+                <td>{{ solicitud_servicio.descripcion }}</td>
+                <td>{{ solicitud_servicio.estado }}</td>
+                <td>{# {{ solicitud_servicio.creado }} #}</td>
+                <td>
+                    <a href="{{ path('solicitud_servicio_show', {'id': solicitud_servicio.id}) }}">show</a>
+                    <a href="{{ path('solicitud_servicio_edit', {'id': solicitud_servicio.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

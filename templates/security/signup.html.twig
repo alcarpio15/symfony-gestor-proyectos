@@ -1,0 +1,15 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Registrar Usuario{% endblock %}
+
+{% block container %}
+    <h1>Registro al Sistema.</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <button class="btn btn-success" type="submit">Crear Usuario</button>
+        <a href="{{ app.request.headers.get('referer') }}" class="btn btn-warning">Back</a>
+    {{ form_end(form) }}
+
+{% endblock %}
