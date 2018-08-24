@@ -19,6 +19,15 @@ class GestorUsuarioRepository extends ServiceEntityRepository
         parent::__construct($registry, GestorUsuario::class);
     }
 
+    public function findAll()
+    {
+        return $this->createQueryBuilder('g')
+            ->orderBy('g.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
     /*
     public function findBySomething($value)
     {

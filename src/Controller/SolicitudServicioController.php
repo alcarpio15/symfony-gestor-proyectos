@@ -10,6 +10,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @Route("/solicitud/servicio")
@@ -19,21 +22,28 @@ class SolicitudServicioController extends Controller
     /**
      * @Route("/", name="solicitud_servicio_index", methods="GET")
      */
-    public function index(SolicitudServicioRepository $solicitudServicioRepository): Response
+    public function index(SolicitudServicioRepository $solSrvcRepo, UserInterface $user, AuthorizationCheckerInterface $authChecker): Response
     {
-        return $this->render('solicitud_servicio/index.html.twig', ['solicitud_servicios' => $solicitudServicioRepository->findAll()]);
+        if ($authChecker->isGranted('ROLE_DIRECT')) {
+            return $this->render('solicitud_servicio/index_direct.html.twig', ['solicitud_servicios' => $solSrvcRepo->findAll()]);
+        }
+        else {
+            return $this->render('solicitud_servicio/index.html.twig', ['solicitud_servicios' => $solSrvcRepo->findAllByUser($user->getId())]);
+        }
+        
     }
 
     /**
      * @Route("/new", name="solicitud_servicio_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, UserInterface $user): Response
     {
         $solicitudServicio = new SolicitudServicio();
         $form = $this->createForm(SolicitudServicioType::class, $solicitudServicio);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $solicitudServicio->setAutor($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($solicitudServicio);
             $em->flush();

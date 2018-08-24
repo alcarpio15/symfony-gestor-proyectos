@@ -38,11 +38,11 @@ class GestorUsuario implements UserInterface, \Serializable
     private $username;
 
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(groups={"registration"})
      * @Assert\Length(max=16)
      * 
      * La Longitud puede ser hasta 4096 caracteres,
-     * pero es mejor trabajar con una lonhitud mas
+     * pero es mejor trabajar con una longitud mas
      * sensato para un formulario de registro.
      */
     private $plainPassword;
@@ -57,11 +57,35 @@ class GestorUsuario implements UserInterface, \Serializable
      */
     private $roles;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $activo;
+
     public function __construct() {
         $this->roles = array('ROLE_USER');
+        $this->activo = true;
     }
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nombres;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $apellidos;
+
     // other properties and methods
+
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function getEmail()
     {
@@ -127,6 +151,51 @@ class GestorUsuario implements UserInterface, \Serializable
         $this->roles = array_merge(array_diff($this->roles, $roles));
         
         return $this->roles;
+    }
+
+     /**
+     * @return boolean
+     */
+    public function getActivo()
+    {
+        return $this->activo;
+    }
+
+    /**
+     * @param boolean $activo
+     *
+     * @return self
+     */
+    public function setActivo($activo)
+    {
+        $this->activo = $activo;
+
+        return $this;
+    }
+
+    
+    public function getNombres()
+    {
+        return $this->nombres;
+    }
+
+    public function setNombres($nombres)
+    {
+        $this->nombres = $nombres;
+
+        return $this;
+    }
+
+    public function getApellidos()
+    {
+        return $this->apellidos;
+    }
+
+    public function setApellidos($apellidos)
+    {
+        $this->apellidos = $apellidos;
+
+        return $this;
     }
 
     public function eraseCredentials()

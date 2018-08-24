@@ -4,19 +4,21 @@
     Plantilla Básica 
   -->
   <head>
-    <meta charset="UTF-8" />
     <title>Gestor de Proyectos: {% block title %}Titulo Provisional{% endblock %}</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block stylesheets %}
-      <link href="{{ asset('blocktester.css') }}" rel="stylesheet" />
+      <link rel="stylesheet" href="{{ asset('build/gestorglobal.css') }}"> 
     {% endblock %}
   </head>
   <body>
-    <div id="top"><p>Cabecera</p>
+    <script src="{{ asset('build/gestorglobal.js') }}"></script>
+    <div class="navbar navbar-top" id="top"><p>Cabecera</p>
       <div id="header_img"><p>Imagen de Cabecera</p></div>
-      <nav><p>Barra de Navegación</p></nav>
+      <nav class="navbar navbar-inverse"><p class="navbar-text">Barra de Navegación</p></nav>
     </div>
-    <div id="container">{% block container %}<p>Aqui va el Contenedor.</p>
+    <div class="container col-sm-12" id ="container">{% block container %}<p>Aqui va el Contenedor.</p>
     {% endblock %}</div>
-    <div id="bottom"><p>Pie de Pagina</p></div>
+    <div class="navbar navbar-default" id="bottom"><p class="navbar-text">Pie de Pagina</p></div>
   </body>
 </html>

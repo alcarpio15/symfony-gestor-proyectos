@@ -18,6 +18,7 @@
             value="{{ csrf_token('authenticate') }}"
         >
 
-        <button type="submit">login</button>
+        <button type="submit" class="btn">Iniciar Sesión</button>
+        <a href="{{ path('signup') }}" class="btn btn-info">Registrar Nuevo Usuario.</a>
     </form>
 {% endblock %}

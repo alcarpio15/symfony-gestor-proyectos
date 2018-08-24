@@ -13,7 +13,30 @@ class SolicitudServicioRepository extends ServiceEntityRepository
         parent::__construct($registry, SolicitudServicio::class);
     }
 
+    public function findAll()
+    {
+        return $this->createQueryBuilder('ss')
+            ->leftJoin('ss.autor','gu')
+            ->orderBy('ss.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findAllByUser($id)
+    {
+        return $this->createQueryBuilder('ss')
+            ->andWhere('ss.autor = :id')
+            ->setParameter('id', $id)
+            ->orderBy('ss.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
     /*
+
     public function findBySomething($value)
     {
         return $this->createQueryBuilder('s')

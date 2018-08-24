@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\GestorUsuario;
+use App\Form\GestorUsuarioSignupType;
 use App\Form\GestorUsuarioType;
 use App\Repository\GestorUsuarioRepository;
 use App\Controller\BaseController;
@@ -18,18 +19,18 @@ class GestorUsuarioController extends Controller
     /**
      * @Route("/usuarios", name="gestor_usuario_index", methods="GET")
      */
-    public function index(GestorUsuarioRepository $gestorUsuarioRepository): Response
+    public function index(GestorUsuarioRepository $gUsrRepo): Response
     {
-        return $this->render('gestor_usuario/index.html.twig', ['gestorUsuarios' => $gestorUsuarioRepository->findAll()]);
+        return $this->render('gestor_usuario/index.html.twig', ['gestor_usuarios' => $gUsrRepo->findAll()]);
     }
 
     /**
-     * @Route("/signup", name="registrar_usuario", methods="GET|POST")
+     * @Route("/signup", name="signup", methods="GET|POST")
      */
     public function registrar(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new GestorUsuario();
-        $form = $this->createForm(GestorUsuarioSignupType::class, $gestorUsuario);
+        $form = $this->createForm(GestorUsuarioSignupType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -43,13 +44,13 @@ class GestorUsuarioController extends Controller
             return $this->redirectToRoute('gestor_usuario_index');
         }
 
-        return $this->render('gestor_usuario/new.html.twig', [
+        return $this->render('security/signup.html.twig', [
             'gestor_usuario' => $user,
             'form' => $form->createView(),
         ]);
     }
 
-    /* /**
+    /* 
      * @Route("/usuarios/{id}", name="gestor_usuario_show", methods="GET")
      */
     public function show(GestorUsuario $gestorUsuario): Response
@@ -59,13 +60,31 @@ class GestorUsuarioController extends Controller
 
     /**
      * @Route("/usuarios/{id}/edit", name="gestor_usuario_edit", methods="GET|POST")
-     *
-    public function edit(Request $request, GestorUsuario $gestorUsuario): Response
+     */
+    public function edit(Request $request, GestorUsuario $gestorUsuario, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $form = $this->createForm(GestorUsuarioType::class, $gestorUsuario);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $plain = $gestorUsuario->getPlainPassword();
+
+            if ($plain) {
+                $password = $passwordEncoder->encodePassword($gestorUsuario, $plain);
+                $gestorUsuario->setPassword($password);
+            }
+
+            $remove = $form->get('remove_roles')->getData();
+            $roles = $form->get('roles_options')->getData();
+
+            if ($remove) {
+                $gestorUsuario->removeRoles($roles);
+            } else {
+                $gestorUsuario->addRoles($roles);
+            }
+            
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('gestor_usuario_edit', ['id' => $gestorUsuario->getId()]);
@@ -77,7 +96,7 @@ class GestorUsuarioController extends Controller
         ]);
     }
 
-     **
+     /**
      * @Route("/usuarios/{id}", name="gestor_usuario_delete", methods="DELETE")
      *
     public function delete(Request $request, GestorUsuario $gestorUsuario): Response

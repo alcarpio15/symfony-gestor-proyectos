@@ -5,6 +5,9 @@
 {% block container %}
     <h1>Indice de Solicitudes de Servicio.</h1>
 
+    <a href="{{ path('solicitud_servicio_new') }}" class="btn btn-default">New Servicio</a>
+    <a href="{{ path('homepage') }}" class="btn btn-warning">Back</a>
+
     <table class="table">
         <thead>
             <tr>
@@ -23,7 +26,7 @@
                 <td>{{ solicitud_servicio.asunto }}</td>
                 <td>{{ solicitud_servicio.descripcion }}</td>
                 <td>{{ solicitud_servicio.estado }}</td>
-                <td>{{ solicitud_servicio.creado }}</td>
+                <td>{# {{ solicitud_servicio.creado }} #}</td>
                 <td>
                     <a href="{{ path('solicitud_servicio_show', {'id': solicitud_servicio.id}) }}">show</a>
                     <a href="{{ path('solicitud_servicio_edit', {'id': solicitud_servicio.id}) }}">edit</a>
@@ -36,9 +39,5 @@
         {% endfor %}
         </tbody>
     </table>
-    <ul>
-        <li><a href="{{ path('solicitud_servicio_new') }}">Agregar Solicitud</a></li>
-        <li><a href="{{ path('homepage') }}">Volver a Pagina de Inicio</a></li>
-    </ul>
 
 {% endblock %}

@@ -10,8 +10,11 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class GestorUsuarioSignupType extends AbstractType
+
+class GestorUsuarioType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -20,30 +23,30 @@ class GestorUsuarioSignupType extends AbstractType
             ->add('username', TextType::class)
             ->add('plainPassword', RepeatedType::class, array(
                 'type' => PasswordType::class,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
+                'required' => false,
+                'first_options'  => array('label' => 'Contraseña'),
+                'second_options' => array('label' => 'Repite la Contraseña'),
             ))
-        ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults([
-            'data_class' => GestorUsuario::class,
-        ]);
-    }
-}
-
-class GestorUsuarioType extends AbstractType
-{
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder
-            ->add('email')
-            ->add('username')
-            ->add('password')
-            ->add('roles')
-        ;
+            ->add('nombres', TextType::class)
+            ->add('apellidos', TextType::class)
+            ->add('remove_roles',CheckboxType::class, array(
+                'mapped' => false,
+                'required' => false,
+                'label' => '¿Desea Remover Roles?'
+            ))
+            ->add('roles_options', ChoiceType::class, array(
+                'choices'  => array(
+                    'Administrador' => 'ROLE_ADMIN',
+                    'Director' => 'ROLE_DIRECT',
+                    'Coordinador General' => 'ROLE_CORDGN',
+                    'Desarrollador' => 'ROLE_DEVLPR',
+                    'Analista' => 'ROLE_ANALST'
+                ),
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
+                'expanded' => true,
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

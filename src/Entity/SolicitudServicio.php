@@ -24,6 +24,14 @@ class SolicitudServicio
 
     // add your own fields
     /**
+     * Clave Foranea al Usuario que crea la Solicitud.
+     *
+     * @ORM\ManyToOne(targetEntity="GestorUsuario")
+     * @ORM\JoinColumn(name="servicio_autor_id", referencedColumnName="id")
+     */
+    private $autor;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="servicio_titulo", type="text", length=140)
@@ -62,6 +70,26 @@ class SolicitudServicio
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return GestorUsuario
+     */
+    public function getAutor()
+    {
+        return $this->autor;
+    }
+
+    /**
+     * @param GestorUsuario
+     *
+     * @return self
+     */
+    public function setAutor($autor)
+    {
+        $this->autor = $autor;
+
+        return $this;
     }
 
     /**
@@ -173,6 +201,7 @@ class SolicitudServicio
     {
         $this->estado = 0;
         $this->creado = new \DateTime("now");
+        $this->modificado = $this->creado;
     }
     /**
      * Para ejecutarse con modificaciones de otros campos
@@ -183,4 +212,5 @@ class SolicitudServicio
     {
         $this->modificado = new \DateTime("now");
     }
+
 }
