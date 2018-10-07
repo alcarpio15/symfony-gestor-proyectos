@@ -21,20 +21,22 @@ class GestorUsuarioController extends Controller
      */
     public function index(GestorUsuarioRepository $gUsrRepo): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+
         return $this->render('gestor_usuario/index.html.twig', ['gestor_usuarios' => $gUsrRepo->findAll()]);
     }
 
     /**
      * @Route("/signup", name="signup", methods="GET|POST")
      */
-    public function registrar(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function registrar(Request $request, UserPasswordEncoderInterface $passEncoder): Response
     {
         $user = new GestorUsuario();
         $form = $this->createForm(GestorUsuarioSignupType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $password = $passEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
 
             $em = $this->getDoctrine()->getManager();
@@ -55,14 +57,18 @@ class GestorUsuarioController extends Controller
      */
     public function show(GestorUsuario $gestorUsuario): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+
         return $this->render('gestor_usuario/show.html.twig', ['gestor_usuario' => $gestorUsuario]);
     }
 
     /**
      * @Route("/usuarios/{id}/edit", name="gestor_usuario_edit", methods="GET|POST")
      */
-    public function edit(Request $request, GestorUsuario $gestorUsuario, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function edit(Request $request, GestorUsuario $gestorUsuario, UserPasswordEncoderInterface $passEncoder): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+
         $form = $this->createForm(GestorUsuarioType::class, $gestorUsuario);
         $form->handleRequest($request);
 
@@ -71,7 +77,7 @@ class GestorUsuarioController extends Controller
             $plain = $gestorUsuario->getPlainPassword();
 
             if ($plain) {
-                $password = $passwordEncoder->encodePassword($gestorUsuario, $plain);
+                $password = $passEncoder->encodePassword($gestorUsuario, $plain);
                 $gestorUsuario->setPassword($password);
             }
 
@@ -83,11 +89,15 @@ class GestorUsuarioController extends Controller
             } else {
                 $gestorUsuario->addRoles($roles);
             }
-            
+
+            if (!in_array('ROLE_DEVLPR', $gestorUsuario->getRoles())) {
+                $gestorUsuario->setAreaDesarrollo(null);
+            }            
 
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('gestor_usuario_edit', ['id' => $gestorUsuario->getId()]);
+            //return $this->redirectToRoute('gestor_usuario_edit', ['id' => $gestorUsuario->getId()]);
+            return $this->redirectToRoute('gestor_usuario_index');
         }
 
         return $this->render('gestor_usuario/edit.html.twig', [
@@ -106,7 +116,7 @@ class GestorUsuarioController extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($gestorUsuario);
+        $gestorUsuario.setEstado(2);
         $em->flush();
 
         return $this->redirectToRoute('gestor_usuario_index');

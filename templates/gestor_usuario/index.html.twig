@@ -13,6 +13,7 @@
                 <th>Id</th>
                 <th>Email</th>
                 <th>Username</th>
+                <th>Developer Area</th>
                 <th>Roles</th>
                 <th>Actions</th>
             </tr>
@@ -23,6 +24,7 @@
                 <td>{{ gestor_usuario.id }}</td>
                 <td>{{ gestor_usuario.email }}</td>
                 <td>{{ gestor_usuario.username }}</td>
+                <td>{{ gestor_usuario.areaDesarrollo | default("Sin Area") }}</td>
                 <td>{{ gestor_usuario.roles ? gestor_usuario.roles|join(', ') : '' }}</td>
                 <td>
                     {# <a href="{{ path('gestor_usuario_show', {'id': gestor_usuario.id}) }}">show</a> #}
@@ -31,7 +33,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="6">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

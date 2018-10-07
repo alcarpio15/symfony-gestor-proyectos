@@ -21,14 +21,18 @@
             </tr>
             <tr>
                 <th>Creado</th>
-                <td>{{ solicitud_servicio.creado }}</td>
+                <td>{{ solicitud_servicio.creado|localizeddate('medium', 'short', 'es_VE', null) }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('solicitud_servicio_index') }}">back to list</a>
+    <a href="{{ path('solicitud_servicio_index') }}" class="btn btn-warning">Back</a>
 
-    <a href="{{ path('solicitud_servicio_edit', {'id': solicitud_servicio.id}) }}">edit</a>
+    <a href="{{ path('solicitud_servicio_edit', {'id': solicitud_servicio.id}) }}" class="btn btn-success">Edit</a>
+
+    <a href="{{ path('solicitud_requerimientos_new', {'s_id': solicitud_servicio.id}) }}" class="btn btn-success">Crear Requerimientos</a>
+
+
 
     {# {{ include('solicitud_servicio/_delete_form.html.twig') }} #}
 {% endblock %}

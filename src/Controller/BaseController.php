@@ -33,13 +33,13 @@ class BaseController extends Controller
     /**
     * @Route("/login", name="login")
     */
-    public function login(Request $request, AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request, AuthenticationUtils $authUtils): Response
     {
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $authUtils->getLastAuthenticationError();
 
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $lastUsername = $authUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', array(
             'last_username' => $lastUsername,

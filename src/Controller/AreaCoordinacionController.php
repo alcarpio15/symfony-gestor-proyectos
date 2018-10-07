@@ -21,6 +21,8 @@ class AreaCoordinacionController extends Controller
      */
     public function index(AreaCoordinacionRepository $areaCoordRepo): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+
         return $this->render('area_coordinacion/index.html.twig', ['areaCoordinaciones' => $areaCoordRepo->findAll()]);
     }
 
@@ -29,6 +31,8 @@ class AreaCoordinacionController extends Controller
      */
     public function new(Request $request, AreaCoordinacionRepository $areaCoordRepo, CoordinadorUpdater $updCoord): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+
         $prevCoord = $updCoord->getCoordinadores($areaCoordRepo);
         $areaCoordinacion = new AreaCoordinacion();
         $form = $this->createForm(AreaCoordinacionType::class, $areaCoordinacion);
@@ -56,6 +60,8 @@ class AreaCoordinacionController extends Controller
      */
     public function show(AreaCoordinacion $areaCoordinacion): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+
         return $this->render('area_coordinacion/show.html.twig', ['area_coordinacion' => $areaCoordinacion]);
     }
 
@@ -64,6 +70,8 @@ class AreaCoordinacionController extends Controller
      */
     public function edit(Request $request, AreaCoordinacion $areaCoordinacion, AreaCoordinacionRepository $areaCoordRepo, CoordinadorUpdater $updCoord): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+        
         $prevCoord = $updCoord->getCoordinadores($areaCoordRepo);
 
         $form = $this->createForm(AreaCoordinacionType::class, $areaCoordinacion);
@@ -75,7 +83,8 @@ class AreaCoordinacionController extends Controller
             $modCoord = $updCoord->getCoordinadores($areaCoordRepo);
             $updated = $updCoord->updateRoles($prevCoord, $modCoord);
 
-            return $this->redirectToRoute('area_coordinacion_edit', ['id' => $areaCoordinacion->getId()]);
+            //return $this->redirectToRoute('area_coordinacion_edit', ['id' => $areaCoordinacion->getId()]);
+            return $this->redirectToRoute('area_coordinacion_index');
         }
 
         return $this->render('area_coordinacion/edit.html.twig', [

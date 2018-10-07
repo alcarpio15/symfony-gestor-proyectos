@@ -1,0 +1,46 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}SolicitudRequerimientos{% endblock %}
+
+{% block container %}
+    <h1>SolicitudRequerimientos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ solicitud_requerimiento.id }}</td>
+            </tr>
+            <tr>
+                <th>Departamento de Procedencia</th>
+                <td>{{ solicitud_requerimiento.procedencia_departamento }}</td>
+            </tr>
+            <tr>
+                <th>Telefono de Procedencia</th>
+                <td>{{ solicitud_requerimiento.procedencia_telefono }}</td>
+            </tr>
+            <tr>
+                <th>Correo de Procedencia</th>
+                <td>{{ solicitud_requerimiento.procedencia_email }}</td>
+            </tr>
+            <tr>
+                <th>Estado</th>
+                <td>{{ solicitud_requerimiento.estado }}</td>
+            </tr>
+            <tr>
+                <th>Creado</th>
+                <td>{{ solicitud_requerimiento.creado }}</td>
+            </tr>
+            <tr>
+                <th>Modificado</th>
+                <td>{{ solicitud_requerimiento.modificado }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('solicitud_requerimientos_index') }}">back to list</a>
+
+    <a href="{{ path('solicitud_requerimientos_edit', {'id': solicitud_requerimiento.id}) }}">edit</a>
+
+    {{ include('solicitud_requerimientos/_delete_form.html.twig') }}
+{% endblock %}

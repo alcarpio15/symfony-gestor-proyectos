@@ -31,10 +31,10 @@
                 </td>
                 <td>{{ solicitud_servicio.descripcion }}</td>
                 <td>{{ solicitud_servicio.estado }}</td>
-                <td>{# {{ solicitud_servicio.creado }} #}</td>
+                <td>{{ solicitud_servicio.creado|localizeddate('medium', 'short', 'es_VE', null) }}</td>
                 <td>
-                    <a href="{{ path('solicitud_servicio_show', {'id': solicitud_servicio.id}) }}">show</a>
-                    <a href="{{ path('solicitud_servicio_edit', {'id': solicitud_servicio.id}) }}">edit</a>
+                    <a href="{{ path('solicitud_servicio_show', {'id': solicitud_servicio.id}) }}" class="btn btn-default">Mostrar</a>
+                    <a href="{{ path('solicitud_servicio_edit', {'id': solicitud_servicio.id}) }}" class="btn btn-success">Editar</a>
                 </td>
             </tr>
         {% else %}

@@ -32,8 +32,7 @@ class AreaCoordinacion
      * @ORM\JoinColumn(name="area_coordinador_id", referencedColumnName="id")
      */
     private $coordinador;
-
-    
+   
 
     /**
      * @return mixed
@@ -72,7 +71,7 @@ class AreaCoordinacion
     }
 
     /**
-     * @param mixed $coordinador
+     * @param GestorUsuario $coordinador
      *
      * @return self
      */
@@ -81,5 +80,10 @@ class AreaCoordinacion
         $this->coordinador = $coordinador;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getArea();
     }
 }

@@ -43,7 +43,7 @@ class CoordinadorUpdater{
                 
             })
         );
-        $addCoord = array_merge(array_Udiff($currCoord, $prevCoord,
+        $addCoord = array_merge(array_udiff($currCoord, $prevCoord,
             function(GestorUsuario $user_a, GestorUsuario $user_b){
                 if ($user_a->getId() == $user_b->getId()) {
                     return 0;

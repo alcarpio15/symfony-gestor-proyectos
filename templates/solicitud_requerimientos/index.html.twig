@@ -1,0 +1,46 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Solicitudes de Requerimientos{% endblock %}
+
+{% block container %}
+    <h1>Indice de Solicitudes de Requerimientos</h1>
+
+    <a href="{{ path('homepage') }}" class="btn btn-warning">Back</a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Procedencia_departamento</th>
+                <th>Procedencia_telefono</th>
+                <th>Procedencia_email</th>
+                <th>Estado</th>
+                <th>Creado</th>
+                <th>Modificado</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for solicitud_requerimiento in solicitud_requerimientos %}
+            <tr>
+                <td>{{ solicitud_requerimiento.id }}</td>
+                <td>{{ solicitud_requerimiento.procedencia_departamento }}</td>
+                <td>{{ solicitud_requerimiento.procedencia_telefono }}</td>
+                <td>{{ solicitud_requerimiento.procedencia_email }}</td>
+                <td>{{ solicitud_requerimiento.estado }}</td>
+                <td>{{ solicitud_requerimiento.creado|localizeddate('medium', 'short', 'es_VE', null) }}</td>
+                <td>{{ solicitud_requerimiento.modificado|localizeddate('medium', 'short', 'es_VE', null) }}</td>
+                <td>
+                    <a href="{{ path('solicitud_requerimientos_show', {'id': solicitud_requerimiento.id}) }}" class="btn btn-success">show</a>
+                    <a href="{{ path('solicitud_requerimientos_edit', {'id': solicitud_requerimiento.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

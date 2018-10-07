@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\GestorUsuario;
+use App\Entity\AreaCoordinacion;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class GestorUsuarioType extends AbstractType
@@ -29,6 +32,16 @@ class GestorUsuarioType extends AbstractType
             ))
             ->add('nombres', TextType::class)
             ->add('apellidos', TextType::class)
+            ->add('areaDesarrollo', EntityType::class, array(
+                'class' => AreaCoordinacion::class,
+                'required' => false,
+                'placeholder' => 'Sin Area',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('ac')
+                        ->orderBy('ac.id', 'ASC');
+                },
+                'label' => 'Area como Desarrollador',
+            ))
             ->add('remove_roles',CheckboxType::class, array(
                 'mapped' => false,
                 'required' => false,

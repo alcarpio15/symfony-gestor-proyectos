@@ -5,6 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Entity\SolicitudRequerimientos;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\HasLifecycleCallbacks()
@@ -44,6 +47,17 @@ class SolicitudServicio
     private $descripcion;
 
     /**
+     * @ORM\Column(name="servicio_codigo_documento", type="text", length=64, nullable=true)
+     */
+    private $codigoDocumento;
+
+    /**
+     * @ORM\OneToMany(targetEntity="SolicitudServicio", mappedBy="servicio")
+     * @ORM\JoinColumn(name="servicio_requerimientos_id", referencedColumnName="id")
+     */
+    private $requerimientos;
+
+    /**
      * @ORM\Column(name="servicio_estado", type="integer")
      */
     private $estado;
@@ -58,11 +72,10 @@ class SolicitudServicio
      */
     private $modificado;
 
-    /**
-     * ORM\Column()
-     */
-    //private $var;
-
+    public function __construct()
+    {
+        $this->requerimientos = new ArrayCollection();
+    }
 
     /**
      * @return integer
@@ -128,6 +141,57 @@ class SolicitudServicio
     public function setDescripcion($descripcion)
     {
         $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCodigoDocumento()
+    {
+        return $this->codigoDocumento;
+    }
+
+    /**
+     * @param mixed $codigoDocumento
+     *
+     * @return self
+     */
+    public function setCodigoDocumento($codigoDocumento)
+    {
+        $this->codigoDocumento = $codigoDocumento;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequerimientos()
+    {
+        return $this->requerimientos;
+    }
+
+    public function addRequerimiento(SolicitudRequerimientos $requerimiento)
+    {
+        if (!$this->requerimientos->contains($requerimiento)) {
+            $this->requerimientos[] = $requerimiento;
+            $requerimiento->setServicio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequerimiento(Product $requerimiento): self
+    {
+        if ($this->requerimientos->contains($requerimiento)) {
+            $this->requerimientos->removeElement($requerimiento);
+            // set the owning side to null (unless already changed)
+            if ($requerimiento->getServicio() === $this) {
+                $requerimiento->setServicio(null);
+            }
+        }
 
         return $this;
     }
@@ -213,4 +277,11 @@ class SolicitudServicio
         $this->modificado = new \DateTime("now");
     }
 
+    public function __toString()
+    {
+
+        $label = "(" . $this->getId() . ") " . $this->getAsunto();
+
+        return $label;
+    }
 }

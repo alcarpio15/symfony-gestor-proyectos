@@ -53,6 +53,14 @@ class GestorUsuario implements UserInterface, \Serializable
     private $password;
 
     /**
+     * Clave Foranea al Area que pertenece como desarrollador.
+     *
+     * @ORM\ManyToOne(targetEntity="AreaCoordinacion")
+     * @ORM\JoinColumn(name="requerimientos_area_id", referencedColumnName="id", nullable=true)
+     */
+    private $areaDesarrollo;
+
+    /**
      * @ORM\Column(type="array")
      */
     private $roles;
@@ -125,6 +133,18 @@ class GestorUsuario implements UserInterface, \Serializable
     public function setPassword($password)
     {
         $this->password = $password;
+
+
+    }
+
+    public function getAreaDesarrollo()
+    {
+        return $this->areaDesarrollo;
+    }
+
+    public function setAreaDesarrollo($area_desarrollo)
+    {
+        $this->areaDesarrollo = $area_desarrollo;
     }
 
     public function getSalt()
@@ -142,15 +162,11 @@ class GestorUsuario implements UserInterface, \Serializable
     public function addRoles(array $roles)
     {
         $this->roles = array_unique(array_merge($this->roles, $roles));
-        
-        return $this->roles;
     }
 
     public function removeRoles(array $roles)
     {
         $this->roles = array_merge(array_diff($this->roles, $roles));
-        
-        return $this->roles;
     }
 
      /**
@@ -169,8 +185,6 @@ class GestorUsuario implements UserInterface, \Serializable
     public function setActivo($activo)
     {
         $this->activo = $activo;
-
-        return $this;
     }
 
     
@@ -182,8 +196,6 @@ class GestorUsuario implements UserInterface, \Serializable
     public function setNombres($nombres)
     {
         $this->nombres = $nombres;
-
-        return $this;
     }
 
     public function getApellidos()
@@ -194,8 +206,6 @@ class GestorUsuario implements UserInterface, \Serializable
     public function setApellidos($apellidos)
     {
         $this->apellidos = $apellidos;
-
-        return $this;
     }
 
     public function eraseCredentials()
@@ -219,4 +229,10 @@ class GestorUsuario implements UserInterface, \Serializable
             $this->password,
         ) = unserialize($serialized, ['allowed_classes' => false]);
     }
+
+    public function __toString()
+    {
+        return $this->getUsername();
+    }
+
 }

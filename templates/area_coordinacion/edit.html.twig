@@ -3,11 +3,10 @@
 {% block title %}Edit AreaCoordinacion{% endblock %}
 
 {% block container %}
-    <h1>Edit AreaCoordinacion</h1>
+    <h1>Editar Coordinaciones de Areas</h1>
 
     {{ include('area_coordinacion/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('area_coordinacion_index') }}" class="btn btn-warning">back to list</a>
-
     {{ include('area_coordinacion/_delete_form.html.twig') }}
+    <a href="{{ path('area_coordinacion_index') }}" class="btn btn-warning">Back</a>    
 {% endblock %}
