@@ -32,7 +32,8 @@ class SolicitudServicioRepository extends ServiceEntityRepository
     public function findAllByUser($id)
     {
         return $this->createQueryBuilder('ss')
-            ->andWhere('ss.autor = :id')
+            ->leftJoin('ss.autor','autor_gu')
+            ->andWhere('autor_gu.id = :id')
             ->setParameter('id', $id)
             ->orderBy('ss.id', 'ASC')
             ->getQuery()

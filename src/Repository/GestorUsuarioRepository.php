@@ -26,7 +26,7 @@ class GestorUsuarioRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-    }
+    }  
 
     /*
     public function findBySomething($value)

@@ -133,8 +133,6 @@ class GestorUsuario implements UserInterface, \Serializable
     public function setPassword($password)
     {
         $this->password = $password;
-
-
     }
 
     public function getAreaDesarrollo()
@@ -177,16 +175,13 @@ class GestorUsuario implements UserInterface, \Serializable
         return $this->activo;
     }
 
-    /**
-     * @param boolean $activo
-     *
-     * @return self
-     */
-    public function setActivo($activo)
-    {
-        $this->activo = $activo;
+    public function activar(){
+        $this->activo = true;
     }
 
+    public function desactivar(){
+        $this->activo = false;
+    }
     
     public function getNombres()
     {
@@ -206,7 +201,7 @@ class GestorUsuario implements UserInterface, \Serializable
     public function setApellidos($apellidos)
     {
         $this->apellidos = $apellidos;
-    }
+    }    
 
     public function eraseCredentials()
     {

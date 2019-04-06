@@ -1,8 +1,8 @@
-{% extends 'base.html.twig' %}
+{% extends 'gestorbase.html.twig' %}
 
 {% block title %}GestorUsuario{% endblock %}
 
-{% block body %}
+{% block container %}
     <h1>GestorUsuario</h1>
 
     <table class="table">
@@ -20,19 +20,14 @@
                 <td>{{ gestor_usuario.username }}</td>
             </tr>
             <tr>
-                <th>Password</th>
-                <td>{{ gestor_usuario.password }}</td>
-            </tr>
-            <tr>
                 <th>Roles</th>
                 <td>{{ gestor_usuario.roles ? gestor_usuario.roles|join(', ') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('gestor_usuario_index') }}">back to list</a>
+    <a href="{{ path('gestor_usuario_index') }}" class="btn btn-warning">Atras</a>
 
-    <a href="{{ path('gestor_usuario_edit', {'id': gestor_usuario.id}) }}">edit</a>
+    <a href="{{ path('gestor_usuario_edit', {'id': gestor_usuario.id}) }}" class="btn btn-success">Editar</a>
 
-    {{ include('gestor_usuario/_delete_form.html.twig') }}
 {% endblock %}

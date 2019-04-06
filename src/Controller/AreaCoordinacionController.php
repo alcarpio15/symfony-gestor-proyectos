@@ -21,7 +21,7 @@ class AreaCoordinacionController extends Controller
      */
     public function index(AreaCoordinacionRepository $areaCoordRepo): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+        $this->denyAccessUnlessGranted('manageAreaCord', null, 'Solo un Administrador puede Acceder esta Página.');
 
         return $this->render('area_coordinacion/index.html.twig', ['areaCoordinaciones' => $areaCoordRepo->findAll()]);
     }
@@ -31,7 +31,7 @@ class AreaCoordinacionController extends Controller
      */
     public function new(Request $request, AreaCoordinacionRepository $areaCoordRepo, CoordinadorUpdater $updCoord): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+        $this->denyAccessUnlessGranted('manageAreaCord', null, 'Solo un Administrador Activo puede Acceder esta Página.');
 
         $prevCoord = $updCoord->getCoordinadores($areaCoordRepo);
         $areaCoordinacion = new AreaCoordinacion();
@@ -60,7 +60,7 @@ class AreaCoordinacionController extends Controller
      */
     public function show(AreaCoordinacion $areaCoordinacion): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+        $this->denyAccessUnlessGranted('manageAreaCord', null, 'Solo un Administrador puede Acceder esta Página.');
 
         return $this->render('area_coordinacion/show.html.twig', ['area_coordinacion' => $areaCoordinacion]);
     }
@@ -70,7 +70,7 @@ class AreaCoordinacionController extends Controller
      */
     public function edit(Request $request, AreaCoordinacion $areaCoordinacion, AreaCoordinacionRepository $areaCoordRepo, CoordinadorUpdater $updCoord): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'Solo un Administrador puede Acceder esta Página.');
+        $this->denyAccessUnlessGranted('manageAreaCord', null, 'Solo un Administrador puede Acceder esta Página.');
         
         $prevCoord = $updCoord->getCoordinadores($areaCoordRepo);
 

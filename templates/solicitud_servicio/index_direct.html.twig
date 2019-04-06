@@ -1,5 +1,7 @@
 {% extends 'gestorbase.html.twig' %}
 
+{% set servstatus = ['Creado','Aceptado','Cancelado','En Progreso','Invalido4','Por Revisar','Invalido6','Completado'] %}
+
 {% block title %}Indice de Solicitudes de Servicio.{% endblock %}
 
 {% block container %}
@@ -14,6 +16,7 @@
                 <th>Id</th>
                 <th>Asunto</th>
                 <th>Autor</th>
+                <th>Oficio</th>
                 <th>Descripcion</th>
                 <th>Estado</th>
                 <th>Creado</th>
@@ -29,8 +32,9 @@
                     {{ solicitud_servicio.autor.nombres | default(solicitud_servicio.autor.username)}}
                     {{ solicitud_servicio.autor.apellidos | default("")}}
                 </td>
-                <td>{{ solicitud_servicio.descripcion }}</td>
-                <td>{{ solicitud_servicio.estado }}</td>
+                <td>{{ solicitud_servicio.codigoDocumento | default("Sin Documento")}}</td>
+                <td>{{ solicitud_servicio.descripcion | default("Sin Descripción")}}</td>
+                <td>{{ servstatus[solicitud_servicio.estado] }}</td>
                 <td>{{ solicitud_servicio.creado|localizeddate('medium', 'short', 'es_VE', null) }}</td>
                 <td>
                     <a href="{{ path('solicitud_servicio_show', {'id': solicitud_servicio.id}) }}" class="btn btn-default">Mostrar</a>
@@ -39,7 +43,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

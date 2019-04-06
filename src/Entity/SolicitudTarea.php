@@ -5,80 +5,90 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use App\Entity\SolicitudRequerimientos;
+use App\Entity\SolicitudTarea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\HasLifecycleCallbacks()
- * @ORM\Table(name="servicios_solicitudes")
- * @ORM\Entity(repositoryClass="App\Repository\SolicitudServicioRepository")
+ * @ORM\Table(name="tarea_solicitudes")
+ * @ORM\Entity(repositoryClass="App\Repository\SolicitudTareaRepository")
  */
-class SolicitudServicio
+class SolicitudTarea
 {
     /**
-     * @var integer
-     * 
-     * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
     // add your own fields
     /**
-     * Clave Foranea al Usuario que crea la Solicitud.
+     * Clave Foranea a la Solicitud de Servicio asociada a esta.
+     *
+     * @ORM\ManyToOne(targetEntity="SolicitudRequerimientos", inversedBy="tareas")
+     * @ORM\JoinColumn(name="tarea_requerimiento_id", referencedColumnName="id")
+     */
+    private $requerimiento;
+
+    /**
+     * Clave Foranea al Desarrollador.
      *
      * @ORM\ManyToOne(targetEntity="GestorUsuario")
-     * @ORM\JoinColumn(name="servicio_autor_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="tarea_desarrollador_id", referencedColumnName="id")
      */
-    private $autor;
+    private $desarrollador;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="servicio_titulo", type="text", length=140)
+     * @ORM\Column(name="tarea_titulo", type="text", length=140)
      */
     private $asunto;
 
     /**
-     * @ORM\Column(name="servicio_descrp", type="text", length=560, nullable=true)
+     * @ORM\Column(name="tarea_descrp", type="text", length=560, nullable=true)
      */
     private $descripcion;
 
     /**
-     * @ORM\Column(name="servicio_codigo_documento", type="text", length=64, nullable=true)
+     * @ORM\Column(name="tarea_entrega_estimada", type="datetimetz")
      */
-    private $codigoDocumento;
+    private $fechaEntregaEstimada;
+
+     /**
+     * @ORM\OneToMany(targetEntity="HistorialTarea", mappedBy="tarea", cascade={"persist"})
+     * @ORM\JoinColumn(name="tarea_historial_id", referencedColumnName="id")
+     */
+    private $historial;
 
     /**
-     * @ORM\OneToMany(targetEntity="SolicitudRequerimientos", mappedBy="servicio")
-     * @ORM\JoinColumn(name="servicio_requerimientos_id", referencedColumnName="id")
-     */
-    private $requerimientos;
-
-    /**
-     * @ORM\Column(name="servicio_estado", type="integer")
+     * @ORM\Column(name="tarea_estado", type="integer")
      */
     private $estado;
 
     /**
-     * @ORM\Column(name="servicio_creado", type="datetimetz")
+     * @ORM\Column(name="tarea_creado", type="datetimetz")
      */
     private $creado;
 
     /**
-     * @ORM\Column(name="servicio_modificado", type="datetimetz")
+     * @ORM\Column(name="tarea_modificado", type="datetimetz")
      */
     private $modificado;
 
+
+    /**
+     * @return self
+     */
     public function __construct()
     {
-        $this->requerimientos = new ArrayCollection();
+        $this->historial = new ArrayCollection();
     }
 
     /**
-     * @return integer
+     * @return mixed
      */
     public function getId()
     {
@@ -86,27 +96,47 @@ class SolicitudServicio
     }
 
     /**
-     * @return GestorUsuario
+     * @return SolicitudRequerimientos
      */
-    public function getAutor()
+    public function getRequerimiento()
     {
-        return $this->autor;
+        return $this->requerimiento;
     }
 
     /**
-     * @param GestorUsuario
+     * @param SolicitudRequerimientos $requerimiento
      *
      * @return self
      */
-    public function setAutor($autor)
+    public function setRequerimiento($requerimiento)
     {
-        $this->autor = $autor;
+        $this->requerimiento = $requerimiento;
 
         return $this;
     }
 
     /**
      * @return mixed
+     */
+    public function getDesarrollador()
+    {
+        return $this->desarrollador;
+    }
+
+    /**
+     * @param mixed $desarrollador
+     *
+     * @return self
+     */
+    public function setDesarrollador($desarrollador)
+    {
+        $this->desarrollador = $desarrollador;
+
+        return $this;
+    }
+
+    /**
+     * @return string
      */
     public function getAsunto()
     {
@@ -146,50 +176,48 @@ class SolicitudServicio
     }
 
     /**
-     * @return mixed
+     * @return \Datetime
      */
-    public function getCodigoDocumento()
+    public function getFechaEntregaEstimada()
     {
-        return $this->codigoDocumento;
+        return $this->fechaEntregaEstimada;
     }
 
     /**
-     * @param mixed $codigoDocumento
+     * @param \DateTime $fechaEntregaEstimada
      *
      * @return self
      */
-    public function setCodigoDocumento($codigoDocumento)
+    public function setFechaEntregaEstimada($fechaEntregaEstimada)
     {
-        $this->codigoDocumento = $codigoDocumento;
-
-        return $this;
+        $this->fechaEntregaEstimada = $fechaEntregaEstimada;
     }
 
     /**
      * @return mixed
      */
-    public function getRequerimientos()
+    public function getHistorial()
     {
-        return $this->requerimientos;
+        return $this->historial;
     }
 
-    public function addRequerimiento(SolicitudRequerimientos $requerimiento)
+    public function addHistorial(HistorialTarea $entradaHistorial)
     {
-        if (!$this->requerimientos->contains($requerimiento)) {
-            $this->requerimientos[] = $requerimiento;
-            $requerimiento->setServicio($this);
+        if (!$this->historial->contains($entradaHistorial)) {
+            $this->historial[] = $entradaHistorial;
+            $entradaHistorial->setTarea($this);
         }
 
         return $this;
     }
 
-    public function removeRequerimiento(SolicitudRequerimientos $requerimiento): self
+    public function removeHistorial(HistorialTarea $entradaHistorial): self
     {
-        if ($this->requerimientos->contains($requerimiento)) {
-            $this->requerimientos->removeElement($requerimiento);
+        if ($this->historial->contains($entradaHistorial)) {
+            $this->historial->removeElement($entradaHistorial);
             // set the owning side to null (unless already changed)
-            if ($requerimiento->getServicio() === $this) {
-                $requerimiento->setServicio(null);
+            if ($entradaHistorial->getTarea() === $this) {
+                $entradaHistorial->setTarea(null);
             }
         }
 
@@ -212,8 +240,6 @@ class SolicitudServicio
     public function setEstado($estado)
     {
         $this->estado = $estado;
-
-        return $this;
     }
 
     /**
@@ -232,8 +258,6 @@ class SolicitudServicio
     public function setCreado($creado)
     {
         $this->creado = $creado;
-
-        return $this;
     }
 
     /**
@@ -252,8 +276,6 @@ class SolicitudServicio
     public function setModificado($modificado)
     {
         $this->modificado = $modificado;
-
-        return $this;
     }
 
     /**
@@ -267,6 +289,7 @@ class SolicitudServicio
         $this->creado = new \DateTime("now");
         $this->modificado = $this->creado;
     }
+
     /**
      * Para ejecutarse con modificaciones de otros campos
      * 
@@ -277,11 +300,4 @@ class SolicitudServicio
         $this->modificado = new \DateTime("now");
     }
 
-    public function __toString()
-    {
-
-        $label = "(" . $this->getId() . ") " . $this->getAsunto();
-
-        return $label;
-    }
 }

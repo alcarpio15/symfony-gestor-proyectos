@@ -1,13 +1,14 @@
 {% extends 'gestorbase.html.twig' %}
 
-{% block title %}Edit SolicitudRequerimientos{% endblock %}
+{% block title %}Editar Solicitud de Requerimientos{% endblock %}
 
 {% block container %}
     <h1>Edit Solicitud de Requerimientos</h1>
 
     {{ include('solicitud_requerimientos/_form.html.twig', {'button_label': 'Update'}) }}
+    {% spaceless %}
+        <a href="{{ path('solicitud_requerimientos_index') }}" >Back</a>
 
-    <a href="{{ path('solicitud_requerimientos_index') }}" >Back</a>
-
-    {# {{ include('solicitud_requerimientos/_delete_form.html.twig') }} #}
+        {# {{ include('solicitud_requerimientos/_delete_form.html.twig') }} #}
+    {% endspaceless %}
 {% endblock %}

@@ -21,6 +21,8 @@ class AreaCoordinacionType extends AbstractType
                 'class' => GestorUsuario::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('gu')
+                        ->andWhere('gu.activo = :activo')
+                        ->setParameter('activo', true)
                         ->orderBy('gu.id', 'ASC');
                 },
                 'choice_label' => function ($coordinador){

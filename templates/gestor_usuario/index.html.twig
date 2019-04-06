@@ -27,8 +27,21 @@
                 <td>{{ gestor_usuario.areaDesarrollo | default("Sin Area") }}</td>
                 <td>{{ gestor_usuario.roles ? gestor_usuario.roles|join(', ') : '' }}</td>
                 <td>
-                    {# <a href="{{ path('gestor_usuario_show', {'id': gestor_usuario.id}) }}">show</a> #}
-                    <a href="{{ path('gestor_usuario_edit', {'id': gestor_usuario.id}) }}" class="btn btn-success">Edit</a>
+                    <a href="{{ path('gestor_usuario_show', {'id': gestor_usuario.id}) }}" class="btn btn-default">Mostrar</a>
+                    <a href="{{ path('gestor_usuario_edit', {'id': gestor_usuario.id}) }}" class="btn btn-success">Editar</a>
+                    {% if app.user.id is not same as(gestor_usuario.id) and 'ROLE_CORDAR' not in gestor_usuario.roles %}
+                        {% if gestor_usuario.activo %}
+                            <form method="post" action="{{ path('gestor_usuario_deactivate', {'id': gestor_usuario.id}) }}" onsubmit="return confirm('¿Está seguro de querer desactivar este usuario?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('deactivate' ~ gestor_usuario.id) }}">
+                                <button class="btn">Desactivar</button>
+                            </form>
+                        {% else %}
+                            <form method="post" action="{{ path('gestor_usuario_reactivate', {'id': gestor_usuario.id}) }}" onsubmit="return confirm('¿Está seguro de querer reactivar este usuario?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('reactivate' ~ gestor_usuario.id) }}">
+                                <button class="btn">Reactivar</button>
+                            </form>
+                        {% endif %}
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

@@ -22,11 +22,54 @@ class SolicitudRequerimientosRepository extends ServiceEntityRepository
     public function findAllWithServiceJoin() {
         return $this->createQueryBuilder('sr')
             ->leftJoin('sr.servicio','ss')
-            ->orderBy('sr.id', 'ASC')
+            ->leftJoin('sr.area','ac')
+            ->addOrderBy('ac.id', 'ASC')
+            ->addorderBy('sr.id', 'ASC')
             ->getQuery()
             ->getResult()
         ;
     }
+
+    public function findAllByAreaCoordinatorWithJoins($ac_id) {
+        return $this->createQueryBuilder('sr')
+            ->leftJoin('sr.servicio','ss')
+            ->leftJoin('sr.area','ac')
+            ->leftJoin('ac.coordinador','ac_coord')
+            ->andWhere('ac_coord.id = :ac_id')
+            ->setParameter('ac_id', $ac_id)
+            ->addOrderBy('ac.id', 'ASC')
+            ->addOrderBy('sr.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function countUnfinished(){
+        $qb = $this->createQueryBuilder('sr');
+
+        return $qb->select('COUNT(st.id)')
+            ->andWhere('sr.estado != :completado')
+            ->andWhere('sr.estado != :cancelado')
+            ->setParameters(array(
+                'completado' => 7,
+                'cancelado' => 4
+            ))
+            ->getQuery()
+            ->getgetSingleScalarResult();
+    }
+
+    
+    public function countUncanceled(){
+        $qb = $this->createQueryBuilder('sr');
+
+        return $qb->select('COUNT(st.id)')
+            ->andWhere('sr.estado != :cancelado')
+            ->setParameters(array(
+                'cancelado' => 4
+            ))
+            ->getQuery()
+            ->getgetSingleScalarResult();
+    }    
 
     /*
     public function findBySomething($value)

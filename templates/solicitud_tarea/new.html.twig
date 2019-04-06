@@ -1,0 +1,11 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% block title %}Nueva Solicitud de Tarea{% endblock %}
+
+{% block container %}
+    <h1>Create new SolicitudTarea</h1>
+
+    {{ include('solicitud_tarea/_form.html.twig') }}
+
+    <a href="{{ app.request.headers.get('referer') }}" class="btn btn-warning">Back</a>
+{% endblock %}

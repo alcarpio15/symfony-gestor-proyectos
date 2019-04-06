@@ -52,7 +52,7 @@ class GestorUsuarioController extends Controller
         ]);
     }
 
-    /* 
+    /**
      * @Route("/usuarios/{id}", name="gestor_usuario_show", methods="GET")
      */
     public function show(GestorUsuario $gestorUsuario): Response
@@ -106,19 +106,32 @@ class GestorUsuarioController extends Controller
         ]);
     }
 
-     /**
-     * @Route("/usuarios/{id}", name="gestor_usuario_delete", methods="DELETE")
-     *
-    public function delete(Request $request, GestorUsuario $gestorUsuario): Response
+    /**
+     * @Route("/usuarios/{id}/deactivate", name="gestor_usuario_deactivate", methods="GET|POST")
+     */
+    public function deactivate(Request $request, GestorUsuario $gestorUsuario): Response
     {
-        if (!$this->isCsrfTokenValid('delete'.$gestorUsuario->getId(), $request->request->get('_token'))) {
-            return $this->redirectToRoute('gestor_usuario_index');
-        }
+         if ($this->isCsrfTokenValid('deactivate'.$gestorUsuario->getId(), $request->request->get('_token'))){
+            $em = $this->getDoctrine()->getManager();
+            $gestorUsuario->desactivar();
+            $em->flush();
+         }
 
-        $em = $this->getDoctrine()->getManager();
-        $gestorUsuario.setEstado(2);
-        $em->flush();
+        return $this->redirectToRoute('gestor_usuario_index');        
+    }
 
-        return $this->redirectToRoute('gestor_usuario_index');
-    } */
+    /**
+     * @Route("/usuarios/{id}/reactivate", name="gestor_usuario_reactivate", methods="GET|POST")
+     */
+    public function reactivate(Request $request, GestorUsuario $gestorUsuario): Response
+    {
+         if ($this->isCsrfTokenValid('reactivate'.$gestorUsuario->getId(), $request->request->get('_token'))){
+            $em = $this->getDoctrine()->getManager();
+            $gestorUsuario->activar();
+            $em->flush();
+         }
+
+        return $this->redirectToRoute('gestor_usuario_index');        
+    }
+
 }

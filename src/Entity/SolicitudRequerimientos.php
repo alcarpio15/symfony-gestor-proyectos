@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Entity\SolicitudTarea;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -32,20 +33,32 @@ class SolicitudRequerimientos
     private $servicio;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="requerimientos_procedencia_departamento", type="string", length=255, nullable=true)
      */
     private $procedenciaDepartamento;
 
      /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="requerimientos_procedencia_telefono", type="string", length=255, nullable=true)
      */
     private $procedenciaTelefono;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(name="requerimientos_procedencia_email", type="string", length=255, unique=false, nullable=true)
      * @Assert\Email()
      */
     private $procedenciaEmail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="requerimientos_titulo", type="text", length=140)
+     */
+    private $asunto;
+
+    /**
+     * @ORM\Column(name="requerimientos_descrp", type="text", length=560, nullable=true)
+     */
+    private $descripcion;
 
     /**
      * Clave Foranea al Area al cual se va asignar la Solicitud de Requerimentos.
@@ -54,6 +67,12 @@ class SolicitudRequerimientos
      * @ORM\JoinColumn(name="requerimientos_area_id", referencedColumnName="id")
      */
     private $area;
+
+    /**
+     * @ORM\OneToMany(targetEntity="SolicitudTarea", mappedBy="requerimiento")
+     * @ORM\JoinColumn(name="requerimientos_tareas_id", referencedColumnName="id")
+     */
+    private $tareas;
 
     /**
      * @ORM\Column(name="requerimientos_estado", type="integer")
@@ -69,6 +88,14 @@ class SolicitudRequerimientos
      * @ORM\Column(name="requerimientos_modificado", type="datetimetz")
      */
     private $modificado;
+
+    /**
+     * @return self
+     */
+    public function __construct()
+    {
+        $this->tareas = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -153,6 +180,46 @@ class SolicitudRequerimientos
     /**
      * @return mixed
      */
+    public function getAsunto()
+    {
+        return $this->asunto;
+    }
+
+    /**
+     * @param string $asunto
+     *
+     * @return self
+     */
+    public function setAsunto($asunto)
+    {
+        $this->asunto = $asunto;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * @param string $descripcion
+     *
+     * @return self
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getArea()
     {
         return $this->area;
@@ -166,6 +233,37 @@ class SolicitudRequerimientos
     public function setArea($area)
     {
         $this->area = $area;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTareas()
+    {
+        return $this->tareas;
+    }
+
+    public function addTarea(SolicitudTarea $tarea)
+    {
+        if (!$this->tareas->contains($tarea)) {
+            $this->tareas[] = $tarea;
+            $tarea->setServicio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTarea(SolicitudTarea $tarea): self
+    {
+        if ($this->tareas->contains($tarea)) {
+            $this->tareas->removeElement($tarea);
+            // set the owning side to null (unless already changed)
+            if ($tarea->getServicio() === $this) {
+                $tarea->setServicio(null);
+            }
+        }
+
+        return $this;
     }
 
     /**

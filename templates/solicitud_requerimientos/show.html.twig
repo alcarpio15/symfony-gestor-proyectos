@@ -1,9 +1,9 @@
 {% extends 'gestorbase.html.twig' %}
 
-{% block title %}SolicitudRequerimientos{% endblock %}
+{% block title %}Solicitud de Requerimientos{% endblock %}
 
 {% block container %}
-    <h1>SolicitudRequerimientos</h1>
+    <h1>Solicitud de Requerimientos</h1>
 
     <table class="table">
         <tbody>
@@ -12,16 +12,24 @@
                 <td>{{ solicitud_requerimiento.id }}</td>
             </tr>
             <tr>
+                <th>Asunto</th>
+                <td>{{ solicitud_requerimiento.asunto }}</td>
+            </tr>
+            <tr>
+                <th>Descripción</th>
+                <td>{{ solicitud_requerimiento.descripcion | default("Sin Descripción") }}</td>
+            </tr>
+            <tr>
                 <th>Departamento de Procedencia</th>
-                <td>{{ solicitud_requerimiento.procedencia_departamento }}</td>
+                <td>{{ solicitud_requerimiento.procedenciaDepartamento | default("") }}</td>
             </tr>
             <tr>
                 <th>Telefono de Procedencia</th>
-                <td>{{ solicitud_requerimiento.procedencia_telefono }}</td>
+                <td>{{ solicitud_requerimiento.procedenciaTelefono | default("") }}</td>
             </tr>
             <tr>
                 <th>Correo de Procedencia</th>
-                <td>{{ solicitud_requerimiento.procedencia_email }}</td>
+                <td>{{ solicitud_requerimiento.procedenciaEmail | default("") }}</td>
             </tr>
             <tr>
                 <th>Estado</th>
@@ -29,18 +37,18 @@
             </tr>
             <tr>
                 <th>Creado</th>
-                <td>{{ solicitud_requerimiento.creado }}</td>
+                <td>{{ solicitud_requerimiento.creado | localizeddate('medium', 'short', 'es_VE', null) }}</td>
             </tr>
             <tr>
                 <th>Modificado</th>
-                <td>{{ solicitud_requerimiento.modificado }}</td>
+                <td>{{ solicitud_requerimiento.modificado | localizeddate('medium', 'short', 'es_VE', null) }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('solicitud_requerimientos_index') }}">back to list</a>
+    <a href="{{ path('solicitud_requerimientos_index') }}" class="btn btn-warning">Volver</a>
 
-    <a href="{{ path('solicitud_requerimientos_edit', {'id': solicitud_requerimiento.id}) }}">edit</a>
+    <a href="{{ path('solicitud_requerimientos_edit', {'id': solicitud_requerimiento.id}) }}" class="btn btn-success">Editar</a>
 
-    {{ include('solicitud_requerimientos/_delete_form.html.twig') }}
+    <a href="{{ path('solicitud_tarea_new', {'r_id': solicitud_requerimiento.id}) }}" class="btn btn-success">Crear Tarea</a>
 {% endblock %}

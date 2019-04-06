@@ -4,13 +4,23 @@
 
 {% block container %}
     <h1></h1>
-    <ul class="col-sm-4 list-unstyled">
-        <li><a href="{{ path('solicitud_servicio_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Solicitudes de Servicio</h4></a></li>
-    </ul>
-    <ul class="col-sm-4 list-unstyled">
-        <li><a href="{{ path('gestor_usuario_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Usuarios</h4></a></li>
-        <li><a href="{{ path('area_coordinacion_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Areas</h4></a></li>
-    </ul>
-    <ul class="col-sm-4 list-unstyled"></ul>
+    <div id="gestor-index-menu" class="col-sm-12">
+        <ul class="col-sm-4 list-unstyled">
+            <li><a href="{{ path('solicitud_servicio_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Solicitudes de Servicio</h4></a></li>
+            {% if is_granted('ROLE_CORDAR') %}
+                <li><a href="{{ path('solicitud_requerimientos_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Solicitudes de Requerimientos</h4></a></li>
+            {% endif %}
+            {% if is_granted('ROLE_DEVLPR') %}
+                <li><a href="{{ path('solicitud_tarea_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Solicitudes de Tareas</h4></a></li>
+            {% endif %}
+        </ul>
+        <ul class="col-sm-4 list-unstyled">
+        {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{ path('gestor_usuario_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Usuarios</h4></a></li>
+            <li><a href="{{ path('area_coordinacion_index') }}" class="list-group-item"><h4 class="list-group-item-heading">Ver Areas</h4></a></li>
+        {% endif %}
+        </ul>
+        <ul class="col-sm-4 list-unstyled"></ul>
+    </div>
     <a href="{{ path('logout') }}" class="col-sm-8 btn btn-warning"><h4>Cerrar Sesión</h4></a>
 {% endblock %}

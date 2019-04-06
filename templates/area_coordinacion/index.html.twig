@@ -27,8 +27,8 @@
                     {{ area_coordinacion.coordinador.apellidos | default("")}}
                 </td>
                 <td>
-                    <a href="{{ path('area_coordinacion_show', {'id': area_coordinacion.id}) }}">show</a>
-                    <a href="{{ path('area_coordinacion_edit', {'id': area_coordinacion.id}) }}">edit</a>
+                    <a href="{{ path('area_coordinacion_show', {'id': area_coordinacion.id}) }}" class="btn btn-default">Mostrar</a>
+                    <a href="{{ path('area_coordinacion_edit', {'id': area_coordinacion.id}) }}" class="btn btn-success">Editar</a>
                 </td>
             </tr>
         {% else %}

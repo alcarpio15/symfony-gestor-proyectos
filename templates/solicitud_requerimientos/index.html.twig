@@ -11,28 +11,37 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Procedencia_departamento</th>
-                <th>Procedencia_telefono</th>
-                <th>Procedencia_email</th>
+                <th>Servicio</th>
+                <th>Procedencia</th>
+                <th>Asunto</th>
                 <th>Estado</th>
                 <th>Creado</th>
                 <th>Modificado</th>
-                <th>actions</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
+        {% set area = 0 %}
         {% for solicitud_requerimiento in solicitud_requerimientos %}
+            {% if area is not same as(solicitud_requerimiento.area.id) %}
+                <tr class="warning">
+                    <th colspan="8"> Area - {{ solicitud_requerimiento.area }}</th>
+                </tr>
+                {% set area = solicitud_requerimiento.area.id %}
+            {% endif %}
             <tr>
                 <td>{{ solicitud_requerimiento.id }}</td>
-                <td>{{ solicitud_requerimiento.procedencia_departamento }}</td>
-                <td>{{ solicitud_requerimiento.procedencia_telefono }}</td>
-                <td>{{ solicitud_requerimiento.procedencia_email }}</td>
+                <td>{{ solicitud_requerimiento.servicio }}</td>
+                <td>{{ solicitud_requerimiento.procedenciaDepartamento }}</td>
+                <td>{{ solicitud_requerimiento.asunto }}</td>
                 <td>{{ solicitud_requerimiento.estado }}</td>
                 <td>{{ solicitud_requerimiento.creado|localizeddate('medium', 'short', 'es_VE', null) }}</td>
                 <td>{{ solicitud_requerimiento.modificado|localizeddate('medium', 'short', 'es_VE', null) }}</td>
                 <td>
-                    <a href="{{ path('solicitud_requerimientos_show', {'id': solicitud_requerimiento.id}) }}" class="btn btn-success">show</a>
-                    <a href="{{ path('solicitud_requerimientos_edit', {'id': solicitud_requerimiento.id}) }}">edit</a>
+                    <a href="{{ path('solicitud_requerimientos_show', {'id': solicitud_requerimiento.id}) }}" class="btn btn-default">Mostrar</a>
+                    {% if is_granted('ROLE_CORDGN') %}
+                        <a href="{{ path('solicitud_requerimientos_edit', {'id': solicitud_requerimiento.id}) }}" class="btn btn-success">Editar</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

@@ -1,0 +1,55 @@
+{% extends 'gestorbase.html.twig' %}
+
+{% if is_granted('ROLE_CORDAR') %}
+    {% set %}
+{% endif %}
+
+{% block title %}SolicitudTarea index{% endblock %}
+
+{% block container %}
+    <h1>Solicitud Tarea index</h1>
+    <a href="{{ path('homepage') }}" class="btn btn-warning">Back</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Asunto</th>
+                <th>Requerimiento</th>
+                <th>Descripcion</th>
+                <th>Desarrollador</th>
+                <th>Fecha Estimada de Entrega</th>
+                <th>Estado</th>
+                <th>Creado</th>
+                <th>Modificado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for solicitud_tarea in solicitud_tareas %}
+            <tr>
+                <td>{{ solicitud_tarea.id }}</td>
+                <td>{{ solicitud_tarea.requerimiento }}</td>>
+                <td>{{ solicitud_tarea.asunto }}</td>
+                <td>{{ solicitud_tarea.descripcion }}</td>
+                <td>{{ solicitud_tarea.desarrollador.nombres | default(solicitud_tarea.desarrollador.username)}}
+                    {{ solicitud_tarea.desarrollador.apellidos | default("")}}</td>
+                <td>{{ solicitud_tarea.fechaEntregaEstimada }}</td>
+                <td>{{ solicitud_tarea.estado }}</td>
+                <td>{{ solicitud_tarea.creado }}</td>
+                <td>{{ solicitud_tarea.modificado }}</td>
+                <td>
+                    <a href="{{ path('solicitud_tarea_show', {'id': solicitud_tarea.id}) }}" class="btn btn-default">Mostrar</a>
+                    {% if is_granted('ROLE_CORDAR') %} 
+                        <a href="{{ path('solicitud_tarea_edit', {'id': solicitud_tarea.id}) }}" class="btn btn-success">Editar</a> 
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

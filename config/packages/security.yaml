@@ -36,6 +36,10 @@ security:
             logout_on_user_change: true
     role_hierarchy:
         ROLE_ADMIN:  [ROLE_DIRECT, ROLE_ANALST, ROLE_CORDGN]
+        ROLE_DIRECT: [ROLE_CORDGN, ROLE_ANALST]
+        ROLE_CORDGN: [ROLE_CORDAR, ROLE_DVLPR]
+        ROLE_CORDAR: [ROLE_DVLPR]
+
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
